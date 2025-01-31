@@ -1,0 +1,97 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using TMPro;
+using UnityEngine;
+
+public class 5eHPCalc : MonoBehaviour //Character information
+{
+    public string characterName;
+    public int level;
+    public int conScore;
+    public bool isHillDwarf;
+    public bool hasToughFeat;
+    public bool isAveraged; //True for averaged, false for rolled
+}
+
+private Dictionary<string, int> classHitDice = new Dictionary<string, int>()
+{
+    {"Artificer", 8 },
+    {"Barbarian", 12 },
+    {"Bard", 8 },
+    {"Cleric", 8 },
+    {"Druid", 8 },
+    {"Fighter", 10 },
+    {"Monk", 8 },
+    {"Ranger", 10 },
+    {"Rogue", 8 },
+    {"Paladin", 10 },
+    {"Sorcerer", 6 },
+    {"Wizard", 6 },
+    {"Warlock", 8 },
+};
+
+private Dictionary<int, int> conModifier = new Dictionary<int, int>()
+{
+    {1, -5 },
+    {2, -4 },
+    {3, -4 },
+    {4, -3 },
+    {5, -3 },
+    {6, -2 },
+    {7, -2 },
+    {8, -1 },
+    {9, -1 },
+    {10, 0 },
+    {11, 0 },
+    {12, 1 },
+    {13, 1 },
+    {14, 2 },
+    {15, 2 },
+    {16, 3 },
+    {17, 3 },
+    {18, 4 },
+    {19, 4 },
+    {20, 5 },
+    {21, 5 },
+    {22, 6 },
+    {23, 6 },
+    {24, 7 },
+    {25, 7 },
+    {26, 8 },
+    {27, 8 },
+    {28, 9 },
+    {29, 9 },
+    {30, 10 },
+};
+
+void Start()
+{
+    int totalHP = CalculateHP();
+    Debug.Log($"{characterName}'s HP: {totalHP}");
+}
+
+private int CalculateHP()
+{
+    int hitDie = classHitDice[""];
+    int conModifier = ConsoleModifiers.ContrainsKey(conScore) ? ConsoleModifiers[conScore] : (conScore - 10) / 2;
+    int raceModifier = isHillDwarf ? level : 0;
+    int featModifier = hasToughFeat ? 2 * level : 0;
+
+    if (isAveraged)
+    {
+        int averageRoll = (hitDie +1)/2
+        return (averageRoll + conModifier) * level + raceModifier + featModifier;
+    }
+    else
+    {
+        int totalHP = 0;
+        for (int i = 0; i < totalHP; i++)
+        {
+            totalHP += Random.Range(1, hitDie + 1) + conModifier;
+        }
+        return totalHP + raceModifier + featModifier;
+    }
+}
