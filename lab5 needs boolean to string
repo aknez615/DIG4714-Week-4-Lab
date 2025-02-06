@@ -1,0 +1,131 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+public class DNDCLASS : MonoBehaviour
+{
+    [Header("Character Stats")]
+
+    public string characterName;
+    public string CharacterClass;
+    public int level;
+    public int conScore;
+    public bool isHillDwarf;
+    public bool hasToughFeat;
+    public bool isAveraged; //True for averaged, false for rolled
+
+    
+    private float HP_default = 1;
+
+    float calculatedHP;
+
+    void Start()
+    {
+        CalculateHP();
+
+        Debug.Log("Your name is " , characterName , "Is a level " , level , CharacterClass , "with a constitution score of " , conScore ,);
+    }
+
+    private Dictionary<string, int> classHitDice = new Dictionary<string, int>()
+{
+    {"Artificer", 8 },
+    {"Barbarian", 12 },
+    {"Bard", 8 },
+    {"Cleric", 8 },
+    {"Druid", 8 },
+    {"Fighter", 10 },
+    {"Monk", 8 },
+    {"Ranger", 10 },
+    {"Rogue", 8 },
+    {"Paladin", 10 },
+    {"Sorcerer", 6 },
+    {"Wizard", 6 },
+    {"Warlock", 8 },
+
+
+};
+
+    private List<string> characterClass = new List<string>()
+    {
+        "Artificer " , "Barbarian " , "Bard" , "Cleric" , "Druid" , "Fighter" , "Monk" , "Ranger" , "Rogue" , "Paladin" , "Sorcerer" , "Wizard", "Warlock"
+    };
+
+    // ===========  ARRAY   ============
+    private int conModifer;
+    int[] conModifier = new int[]
+{ -5, -4, -4, 3, -3, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 , 9 , 9 , 10 };
+
+
+void Isdwarf()
+    {
+        if (isHillDwarf == true)
+        {
+            return
+        }
+    }
+void Dwarf()
+    {
+        HP_default += level;
+    }
+
+    void Tough()
+    {
+        HP_default += 2 * level;
+        return;
+    }
+    void AverageDie()
+    {
+        
+        
+            float hitDie = (classHitDice[CharacterClass] + 1) / 2;
+
+            return;
+        
+    }
+    void CalculateHP()
+    {
+        int hitDie = classHitDice[CharacterClass];
+        Debug.Log(hitDie);
+
+        int conMod = conModifier[conScore - 1] ;
+        Debug.Log(conMod);
+
+        Dwarf();
+        Tough();
+        
+        if (isAveraged)
+        {
+            AverageDie();
+        }
+     
+         int raceModifier = isHillDwarf ? level : 0;
+         int featModifier = hasToughFeat ? 2 * level : 0;
+
+        if (isAveraged)
+        {
+            calculatedHP = hitDie + HP_default + conMod;
+            Debug.Log(calculatedHP);
+
+        }   
+
+        else
+        {
+            int total = 0;
+            
+         
+            for (int i = 0; i < level; i++ )
+            {
+                int randomDiceRoll = UnityEngine.Random.Range(1, hitDie);
+                Debug.Log(randomDiceRoll);
+                total += randomDiceRoll;
+                Debug.Log(total);
+
+            }
+            calculatedHP = total + HP_default + conMod;
+            Debug.Log(calculatedHP);
+        }
+
+    }
+}
